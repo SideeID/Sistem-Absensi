@@ -1,5 +1,9 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -7,18 +11,14 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { AuthProvider } from '@/context/AuthContext';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -27,7 +27,6 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -42,7 +41,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -51,8 +54,52 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+        <Stack.Screen name='modal' options={{ presentation: 'modal' }} />
+        <Stack.Screen name='login' options={{ headerShown: false }} />
+        <Stack.Screen name='register' options={{ headerShown: false }} />
+        <Stack.Screen
+          name='edit-profile'
+          options={{
+            title: 'Edit Profil',
+            headerBackTitle: 'Kembali',
+          }}
+        />
+        <Stack.Screen
+          name='change-password'
+          options={{
+            title: 'Ubah Password',
+            headerBackTitle: 'Kembali',
+          }}
+        />
+        <Stack.Screen
+          name='check-in'
+          options={{
+            title: 'Check In',
+            headerBackTitle: 'Kembali',
+          }}
+        />
+        <Stack.Screen
+          name='check-out'
+          options={{
+            title: 'Check Out',
+            headerBackTitle: 'Kembali',
+          }}
+        />
+        <Stack.Screen
+          name='riwayat-absensi'
+          options={{
+            title: 'Riwayat Absensi',
+            headerBackTitle: 'Kembali',
+          }}
+        />
+        <Stack.Screen
+          name='statistik-absensi'
+          options={{
+            title: 'Statistik Absensi',
+            headerBackTitle: 'Kembali',
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );
