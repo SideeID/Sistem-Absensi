@@ -104,14 +104,23 @@ export default function StatistikAbsensiScreen() {
     color: string;
     percentage: number;
   }) => (
-    <View style={[styles.statCard, { backgroundColor: 'white' }]}>
-      <View style={[styles.iconContainer, { backgroundColor: color }]}>
-        <FontAwesome name={icon} size={24} color='white' />
+    <View
+      style={[
+        styles.statCard,
+        { backgroundColor: colorScheme === 'dark' ? '#1E1E1E' : 'white' },
+      ]}
+    >
+      <View style={styles.statCardHeader}>
+        <View style={[styles.iconContainer, { backgroundColor: color + '20' }]}>
+          <FontAwesome name={icon} size={20} color={color} />
+        </View>
+        <Text style={[styles.statPercentage, { color: textColor }]}>
+          {percentage}%
+        </Text>
       </View>
       <View style={styles.statContent}>
-        <Text style={styles.statTitle}>{title}</Text>
         <Text style={[styles.statValue, { color }]}>{value}</Text>
-        <Text style={styles.statPercentage}>{percentage}%</Text>
+        <Text style={[styles.statTitle, { color: textColor }]}>{title}</Text>
       </View>
     </View>
   );
@@ -136,10 +145,15 @@ export default function StatistikAbsensiScreen() {
             {label}
           </Text>
           <Text style={[styles.progressValue, { color: textColor }]}>
-            {value} ({Math.round(percentage)}%)
+            {value} hari
           </Text>
         </View>
-        <View style={styles.progressBarBg}>
+        <View
+          style={[
+            styles.progressBarBg,
+            { backgroundColor: colorScheme === 'dark' ? '#333' : '#F0F0F0' },
+          ]}
+        >
           <View
             style={[
               styles.progressBarFill,
@@ -147,6 +161,9 @@ export default function StatistikAbsensiScreen() {
             ]}
           />
         </View>
+        <Text style={[styles.progressPercentage, { color: textColor }]}>
+          {Math.round(percentage)}% dari total hari
+        </Text>
       </View>
     );
   };
@@ -197,30 +214,93 @@ export default function StatistikAbsensiScreen() {
       }
     >
       <View style={styles.content}>
-        <View style={styles.headerContainer}>
-          <FontAwesome name='bar-chart' size={60} color={tintColor} />
-          <Text style={[styles.title, { color: textColor }]}>
-            Statistik Absensi
-          </Text>
-          <Text style={[styles.subtitle, { color: textColor }]}>
-            Total Hari: {getTotalDays()}
-          </Text>
-        </View>
-
         {stats ? (
           <>
             <View
-              style={[styles.performanceCard, { backgroundColor: 'white' }]}
+              style={[
+                styles.performanceCard,
+                {
+                  backgroundColor: colorScheme === 'dark' ? '#1E1E1E' : 'white',
+                },
+              ]}
             >
-              <Text style={styles.performanceTitle}>Performa Kehadiran</Text>
+              <Text style={[styles.performanceTitle, { color: textColor }]}>
+                Statistik Absensi
+              </Text>
               <View style={styles.performanceContent}>
-                <View style={styles.performanceCircle}>
+                <View
+                  style={[
+                    styles.performanceCircle,
+                    {
+                      borderColor: tintColor + '30',
+                      backgroundColor: tintColor + '10',
+                    },
+                  ]}
+                >
                   <Text
                     style={[styles.performancePercentage, { color: tintColor }]}
                   >
                     {stats.percentage}%
                   </Text>
-                  <Text style={styles.performanceLabel}>Kehadiran</Text>
+                  <Text style={[styles.performanceLabel, { color: textColor }]}>
+                    Kehadiran
+                  </Text>
+                </View>
+                <View style={styles.performanceStats}>
+                  <View style={styles.performanceStatItem}>
+                    <Text
+                      style={[
+                        styles.performanceStatValue,
+                        { color: '#4CAF50' },
+                      ]}
+                    >
+                      {stats.total_present}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.performanceStatLabel,
+                        { color: textColor },
+                      ]}
+                    >
+                      Hadir
+                    </Text>
+                  </View>
+                  <View style={styles.performanceStatItem}>
+                    <Text
+                      style={[
+                        styles.performanceStatValue,
+                        { color: '#FF9800' },
+                      ]}
+                    >
+                      {stats.total_late}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.performanceStatLabel,
+                        { color: textColor },
+                      ]}
+                    >
+                      Terlambat
+                    </Text>
+                  </View>
+                  <View style={styles.performanceStatItem}>
+                    <Text
+                      style={[
+                        styles.performanceStatValue,
+                        { color: '#F44336' },
+                      ]}
+                    >
+                      {stats.total_absent}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.performanceStatLabel,
+                        { color: textColor },
+                      ]}
+                    >
+                      Tidak Hadir
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -248,33 +328,6 @@ export default function StatistikAbsensiScreen() {
                 percentage={getPercentage(stats.total_absent)}
               />
             </View>
-
-            <View
-              style={[styles.progressSection, { backgroundColor: 'white' }]}
-            >
-              <Text style={styles.progressSectionTitle}>Detail Kehadiran</Text>
-
-              <ProgressBar
-                label='Hadir'
-                value={stats.total_present}
-                total={getTotalDays()}
-                color='#4CAF50'
-              />
-
-              <ProgressBar
-                label='Terlambat'
-                value={stats.total_late}
-                total={getTotalDays()}
-                color='#FF9800'
-              />
-
-              <ProgressBar
-                label='Tidak Hadir'
-                value={stats.total_absent}
-                total={getTotalDays()}
-                color='#F44336'
-              />
-            </View>
           </>
         ) : (
           <View style={styles.emptyContainer}>
@@ -300,20 +353,6 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
   },
-  headerContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  subtitle: {
-    fontSize: 16,
-    opacity: 0.7,
-  },
   loadingText: {
     marginTop: 10,
     fontSize: 16,
@@ -335,43 +374,60 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   performanceCard: {
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 20,
     marginBottom: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 5,
+    elevation: 5,
   },
   performanceTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,
-    color: '#333',
+    marginBottom: 24,
   },
   performanceContent: {
     alignItems: 'center',
   },
   performanceCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 8,
-    borderColor: '#E0E0E0',
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    borderWidth: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    marginBottom: 20,
   },
   performancePercentage: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
   },
   performanceLabel: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 14,
+    opacity: 0.7,
     marginTop: 4,
+  },
+  performanceStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginTop: 16,
+  },
+  performanceStatItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  performanceStatValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  performanceStatLabel: {
+    fontSize: 12,
+    opacity: 0.7,
   },
   statsGrid: {
     flexDirection: 'row',
@@ -381,57 +437,47 @@ const styles = StyleSheet.create({
   },
   statCard: {
     width: '48%',
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 16,
+    padding: 20,
     marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 4,
+  },
+  statCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 12,
   },
   statContent: {
     alignItems: 'flex-start',
   },
   statTitle: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 4,
+    opacity: 0.7,
+    marginTop: 4,
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   statPercentage: {
-    fontSize: 12,
-    color: '#999',
-  },
-  progressSection: {
-    borderRadius: 12,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  progressSectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
+    fontSize: 14,
+    fontWeight: '600',
   },
   progressContainer: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   progressHeader: {
     flexDirection: 'row',
@@ -440,22 +486,27 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   progressLabel: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 16,
+    fontWeight: '600',
   },
   progressValue: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   progressBarBg: {
-    height: 8,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 4,
+    height: 12,
+    borderRadius: 6,
     overflow: 'hidden',
+    marginBottom: 8,
   },
   progressBarFill: {
     height: '100%',
-    borderRadius: 4,
+    borderRadius: 6,
+  },
+  progressPercentage: {
+    fontSize: 12,
+    opacity: 0.7,
+    textAlign: 'right',
   },
   emptyContainer: {
     alignItems: 'center',
