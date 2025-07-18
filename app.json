@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Absensi",
-    "slug": "Absensi",
+    "slug": "sistem-absensi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,14 +14,19 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sideid.sistemabsensi",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.sideid.sistemabsensi"
     },
     "web": {
       "bundler": "metro",
@@ -33,6 +38,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a6507fd9-ea56-40db-8a8f-62ab6b64236c"
+      }
+    },
+    "owner": "sideid"
   }
 }
