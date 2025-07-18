@@ -27,30 +27,12 @@ export default function FakeGPSWarningModal({
   onContinueAnyway,
 }: FakeGPSWarningModalProps) {
   const getRiskColor = () => {
-    switch (detectionResult.riskLevel) {
-      case 'high':
-        return '#FF4444';
-      case 'medium':
-        return '#FF8800';
-      case 'low':
-        return '#FFAA00';
-      default:
-        return '#FF4444';
-    }
+    return '#FF4444';
   };
 
-  const getRiskText = () => {
-    switch (detectionResult.riskLevel) {
-      case 'high':
-        return 'TINGGI';
-      case 'medium':
-        return 'SEDANG';
-      case 'low':
-        return 'RENDAH';
-      default:
-        return 'TINGGI';
-    }
-  };
+  // const getRiskText = () => {
+  //   return 'TINGGI';
+  // };
 
   const handleForceClose = () => {
     Alert.alert(
@@ -92,9 +74,9 @@ export default function FakeGPSWarningModal({
               <FontAwesome name='shield' size={24} color='white' />
             </View>
             <Text style={styles.headerTitle}>Deteksi Lokasi Mencurigakan</Text>
-            <Text style={styles.riskLevel}>
+            {/* <Text style={styles.riskLevel}>
               Tingkat Risiko: {getRiskText()}
-            </Text>
+            </Text> */}
           </View>
 
           <View style={styles.content}>
@@ -178,11 +160,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 4,
   },
-  riskLevel: {
-    fontSize: 14,
-    color: '#666',
-    fontWeight: '500',
-  },
+  // riskLevel: {
+  //   fontSize: 14,
+  //   color: '#666',
+  //   fontWeight: '500',
+  // },
   content: {
     padding: 24,
   },
