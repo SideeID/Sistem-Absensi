@@ -1,9 +1,9 @@
 export const API_CONFIG = {
-  DEV_URL: 'http://localhost:8080',
+  DEV_URL: 'http://localhost:3006',
 
   PROD_URL: 'https://auth.side.my.id',
 
-  IS_PRODUCTION: true,
+  IS_PRODUCTION: false,
 };
 
 export const getBaseURL = (): string => {
